@@ -1,19 +1,18 @@
 package com.company.unit12;
 
-import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Product {
     private int id;
     private String name;
     private int price;
-    private LocalDate date;
+    private LocalDateTime date;
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -51,7 +50,7 @@ public class Product {
                 '}';
     }
 
-    public Product(int id, String name, int price, LocalDate date) {
+    public Product(int id, String name, int price, LocalDateTime date) {
         this.id = id;
         this.name = name;
         this.price = price;
