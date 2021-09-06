@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Application {
     private Shop shop = new Shop();
@@ -73,10 +74,11 @@ public class Application {
 
     private void displayProductList() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Выберите тип сортировки");
-        System.out.println("1. По цене(возрастание");
-        System.out.println("2. По цене(убывание)");
-        System.out.println("3. По добавлению(сначала новые,потом более старые");
+        System.out.println("Вывести товары:");
+        System.out.println("1. Отсортированные по цене(возрастание)");
+        System.out.println("2. Отсортированнные по цене(убывание)");
+        System.out.println("3. Отсортированные по дате добавления(сначала новые,потом более старые");
+        System.out.println("4. Отфильтрованных по цене, у которых цена находится между двумя границами ( нижней и верхней)");
         validIntValue(scanner);
         int userChoose = scanner.nextInt();
         List<Product> shopProductList = shop.getProductList();
@@ -93,8 +95,25 @@ public class Application {
                 shopProductList.sort(Comparator.comparing(Product::getDate).reversed());
                 break;
             }
+            case 4: {
+                shopProductList = getProductListFilteredByPrice(scanner, shopProductList);
+                break;
+            }
         }
         System.out.println(shopProductList);
+    }
+
+    private List<Product> getProductListFilteredByPrice(Scanner scanner, List<Product> shopProductList) {
+        System.out.println("Введите верхнюю границу");
+        validIntValue(scanner);
+        int max = scanner.nextInt();
+        System.out.println("Введите нижнюю границу");
+        validIntValue(scanner);
+        int min = scanner.nextInt();
+
+        return shopProductList.stream()
+                .filter(product -> product.getPrice() < max && product.getPrice() > min)
+                .collect(Collectors.toList());
     }
 
     private Product getProduct() {
