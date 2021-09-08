@@ -1,5 +1,9 @@
 package com.company.unit12;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -10,6 +14,7 @@ public class Application {
     private Shop shop = new Shop();
 
     public void start() {
+        readProductListFromFile();
         Scanner scanner = new Scanner(System.in);
         int userChoose = -1;
 
@@ -38,6 +43,7 @@ public class Application {
                     break;
                 }
                 case 0: {
+                    writeProductListToFile();
                     return;
                 }
                 default: {
@@ -46,6 +52,26 @@ public class Application {
             }
         }
     }
+
+    private void writeProductListToFile() {
+        try (FileOutputStream fileOutputStream = new FileOutputStream("src\\com\\company\\unit12\\file.dat");
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+            objectOutputStream.writeObject(shop.getProductList());
+        } catch (Exception ex) {
+            System.out.println("Возникли проблемы при записи в файл");
+        }
+    }
+
+    private void readProductListFromFile() {
+        try (FileInputStream fileInputStream = new FileInputStream("src\\com\\company\\unit12\\file.dat");
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+            List<Product> products = (List<Product>) objectInputStream.readObject();
+            shop.setProductList(products);
+        } catch (Exception ex) {
+            System.out.println("Возникли проблемы при чтении из файла");
+        }
+    }
+
 
     private void validIntValue(Scanner scanner) {
         while (!scanner.hasNextInt()) {
