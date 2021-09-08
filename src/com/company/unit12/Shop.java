@@ -1,7 +1,7 @@
 package com.company.unit12;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.List;
 
 public class Shop {
@@ -32,9 +32,7 @@ public class Shop {
     }
 
     public void addProducts(Product... products) {
-        for (Product product : products) {
-            addProduct(product);
-        }
+        Arrays.asList(products).forEach(this::addProduct);
     }
 
     public void deleteProduct(int id) {
