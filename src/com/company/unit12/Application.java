@@ -8,9 +8,13 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Application {
+
+    private static final String REGEX = "[A-ZА-Я]\\s?([a-zа-я]+\\s?)*\\S?(\\s?\\d\\s?\\d*)*\n";
+
     private Shop shop = new Shop();
 
     public void start() {
@@ -89,13 +93,23 @@ public class Application {
 
     private void addProduct() {
         Product product = getProduct();
-        shop.addProduct(product);
+
+        String name = product.getName();
+        if (Pattern.matches(REGEX, name)) {
+            shop.addProduct(product);
+        } else {
+            System.out.println("Имя товара не валидно");
+        }
     }
 
     private void editProduct() {
         Product product = getProduct();
-        shop.editProduct(product);
-
+        String name = product.getName();
+        if (Pattern.matches(REGEX, name)) {
+            shop.editProduct(product);
+        } else {
+            System.out.println("Имя товара не валидно");
+        }
     }
 
     private void displayProductList() {
